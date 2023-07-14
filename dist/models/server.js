@@ -15,7 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const music_1 = __importDefault(require("../routes/music"));
 const user_1 = __importDefault(require("../routes/user"));
+const video_1 = __importDefault(require("../routes/video"));
 const user_2 = __importDefault(require("./user"));
+const video_2 = __importDefault(require("./video"));
+const music_2 = __importDefault(require("./music"));
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -33,6 +36,7 @@ class Server {
     routes() {
         this.app.use('/api/users', user_1.default);
         this.app.use('/api/musics', music_1.default);
+        this.app.use('/api/videos', video_1.default);
     }
     midlewares() {
         this.app.use(express_1.default.json());
@@ -41,6 +45,8 @@ class Server {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield user_2.default.sync();
+                yield video_2.default.sync();
+                yield music_2.default.sync();
             }
             catch (error) {
                 console.log('Unable to connect db');

@@ -1,7 +1,10 @@
 import express from 'express'
 import routesMusic from '../routes/music'
 import RoutesUser from '../routes/user'
+import routesVideo from '../routes/video'
 import User from './user'
+import Video from './video'
+import Music from './music'
 
 class Server{
     private app: express.Application;
@@ -23,7 +26,8 @@ class Server{
     }
     routes(){
         this.app.use('/api/users',RoutesUser);
-        this.app.use('/api/musics',routesMusic)
+        this.app.use('/api/musics',routesMusic);
+        this.app.use('/api/videos',routesVideo);
     }
     midlewares(){
         this.app.use(express.json());
@@ -31,6 +35,8 @@ class Server{
     async dbConnect(){
         try{
             await User.sync();
+            await Video.sync();
+            await Music.sync();
         }catch(error){
             console.log('Unable to connect db')
         }
