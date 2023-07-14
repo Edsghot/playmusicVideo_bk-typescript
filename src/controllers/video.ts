@@ -48,3 +48,26 @@ export const getbyid = async (req:Request, res:Response) => {
       });
     }
   };
+
+export const deleteVideo = async (req:Request, res:Response) => {
+    try {
+      const { id } = req.params;
+  
+      const video = await Video.findByPk(id);
+      if (!video) {
+        return res.status(404).json({
+          msg: "No se encontro el video",
+        });
+      }
+  
+      await video.destroy();
+  
+      res.status(200).json({ msg: "operacion exitosa" });
+    } catch (error) {
+      res.status(500).json({
+        msg: "error",
+        error,
+      });
+    }
+  };
+  
