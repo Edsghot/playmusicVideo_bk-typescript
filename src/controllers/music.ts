@@ -191,7 +191,7 @@ export const descargarId = async (req: Request, res: Response) => {
   }
 };
 
-export const descargaId2 = async (req: Request, res: Response) => {
+export const descargarId2 = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const options = {
