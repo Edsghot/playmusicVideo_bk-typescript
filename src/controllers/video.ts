@@ -101,3 +101,40 @@ export const updateVideo = async (req:Request, res:Response) => {
     }
   };
   
+export const descargar = async (req:Request, res:Response) => {
+    try {
+      const {url} = req.body;
+      const options = {
+        output: "video.mp4",
+        restrictFilenames: true,
+      };
+  
+      if (!url) {
+        return res.status(500).json({
+          msg: "uno o mas campos vacios",
+        });
+      }
+  
+        await exec(url, options);
+        const filePath = "video.mp4.webm";
+  
+        if (!fs.existsSync(filePath)) {
+         throw new Error(
+            "El archivo de video no se encontró en la ubicación esperada"
+          );
+        }
+  
+        res.download(filePath, "video.mp4", async (err) => {
+          if (err) {
+             return res
+              .status(500)
+              .send("Ocurrió un error al enviar el archivo al frontend");
+          } else {
+            await unlinkAsync(filePath);
+          }
+        });  
+    } catch (error) {
+      res.status(500).send("Ocurrió un error al descargar el video");
+    }
+  };
+  
