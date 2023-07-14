@@ -1,5 +1,4 @@
 import {Router} from 'express'
-import validateToken from './validate_token';
 import { getbyid,deleteVideo, descargar, descargarId, getallVideo, insertVideo, updateVideo } from '../controllers/video';
 
 const router = Router();
