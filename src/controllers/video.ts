@@ -31,3 +31,20 @@ export const insertVideo = async (req:Request, res:Response) => {
     }
   };
 
+export const getbyid = async (req:Request, res:Response) => {
+    try {
+      const { id } = req.params;
+      const video = await Video.findByPk(id);
+  
+      if (!video) {
+        return res.status(404).json({ msg: "video no encontrado" });
+      }
+  
+      res.status(200).json({ msg: "exitoso", result: video });
+    } catch (error) {
+      res.status(500).json({
+        msg: "error",
+        error,
+      });
+    }
+  };
