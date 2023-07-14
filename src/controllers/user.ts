@@ -61,7 +61,9 @@ export const loginUser = async(req:Request,res:Response)=>{
     //generemos el token
     const token = jwt.sign({
         email: email,
-    },process.env.SECRET_KEY || 'erick123')
+    },process.env.SECRET_KEY || 'erick123.',{
+        expiresIn: '80000'
+    })
 
     res.json({token})
 }
