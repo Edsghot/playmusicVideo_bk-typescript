@@ -136,5 +136,67 @@ export const descargar = async (req:Request, res:Response) => {
     } catch (error) {
       res.status(500).send("Ocurrió un error al descargar el video");
     }
+};
+
+export const descargarId =async (req:Request, res:Response) => {
+    try {
+      const { id } = req.params;
+  
+      const options = {
+        output: "video.mp4",
+        restrictFilenames: true,
+      };
+  
+      if (!id) {
+        return res.status(500).json({
+          msg: "digite el ID",
+        });
+      }
+  
+      const video = await Video.findByPk(id);
+      if(!video){
+        return res.status(404).json({
+          msg: "no existe el video"
+        })
+      }
+  
+      const {url}:any = await Video.findOne({
+        where: { id },
+        attributes: ["url"],
+      });
+  
+      if(!url){
+        return res.status(404).json({
+          msg: "no existe url para este video"
+        })
+      }
+  
+        await exec(url, options);
+  
+        await video.update({
+          download: true
+        })
+  
+        const filePath = "video.mp4.webm";
+  
+        if (!fs.existsSync(filePath)) {
+          throw new Error(
+            "El archivo de video no se encontró en la ubicación esperada"
+          );
+        }
+  
+        res.download(filePath, "video.mp4", async (err) => {
+          if (err) {
+             return res
+              .status(500)
+              .send("Ocurrió un error al enviar el archivo al frontend");
+          } else {
+            await unlinkAsync(filePath);
+          }
+        });
+        
+    } catch (error) {
+      res.status(500).send("Ocurrió un error al descargar el video");
+    }
   };
   
