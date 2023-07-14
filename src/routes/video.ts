@@ -4,9 +4,9 @@ import { getbyid,deleteVideo, descargar, descargarId, getallVideo, insertVideo, 
 
 const router = Router();
 
-router.get('/getAll',getallVideo)
-router.get('/getById/:id', getbyid);
-router.get('/downloadById/:id',descargarId)
+router.get('/getall',getallVideo)
+router.get('/getbyid/:id', getbyid);
+router.get('/downloadbyid/:id',descargarId)
 //==================POST=======================================
 router.post('/download',descargar);
 router.post('/insert',insertVideo)
