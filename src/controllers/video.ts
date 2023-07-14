@@ -69,5 +69,35 @@ export const deleteVideo = async (req:Request, res:Response) => {
         error,
       });
     }
+};
+
+
+export const updateVideo = async (req:Request, res:Response) => {
+    try {
+      const { id } = req.params;
+      const { name, description, url ,state} = req.body;
+  
+      const video = await Video.findByPk(id);
+      if (!video) {
+        return res.status(404).json({
+          msg: "no hay Video",
+        });
+      }
+  
+      if (!name || !description || !url ) {
+        return res.status(400).json({
+          msg: "uno o mas campos vacios",
+        });
+      }
+  
+      const update = await video.update({ name, description, url,state });
+  
+     return res.status(201).json({ msg: "operacion exitosa!", result: update });
+    } catch (error) {
+      return res.status(500).json({
+        msg: "error",
+        error,
+      });
+    }
   };
   
